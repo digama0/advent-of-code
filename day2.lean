@@ -3,6 +3,8 @@ open parser
 
 def day2 := go "day2.txt" (many (many letter <* ch '\n'))
 
+namespace day2
+
 def count1 {α lt} [decidable_rel lt] (c : rbmap α ℕ lt) (a : α) : rbmap α ℕ lt :=
 c.insert a $ match c.find a with
 | (some n) := n + 1
@@ -31,3 +33,5 @@ def diffs {α} [decidable_eq α] : list (list α) → list α
 | [] := []
 
 #eval day2 $ λ ls, some (list.as_string (diffs ls))
+
+end day2
