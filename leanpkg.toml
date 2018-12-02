@@ -1,0 +1,8 @@
+[package]
+name = "aoc"
+version = "0.1"
+lean_version = "3.4.1"
+path = "src"
+
+[dependencies]
+mathlib = {git = "https://github.com/leanprover/mathlib", rev = "1c60f5b8b7015ed35f642d735d415b23aa85caec"}
