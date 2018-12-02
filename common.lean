@@ -17,3 +17,10 @@ do s ← io.fs.read_file file,
   sum.inr a ← return $ run p s,
   some str ← return $ m a,
   trace str (return ())
+
+def rbmap.modify {α β lt} [decidable_rel lt] (s : rbmap α β lt)
+  (a : α) (z : β) (f : β → β) : rbmap α β lt :=
+s.insert a $ match s.find a with
+| (some b) := f b
+| none := z
+end
