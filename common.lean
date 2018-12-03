@@ -18,6 +18,11 @@ do s ← io.fs.read_file file,
   some str ← return $ m a,
   trace str (return ())
 
+def test {α} (inp : string) (p : parser α) (m : α → option string) : io unit :=
+do sum.inr a ← return $ run p inp.to_char_buffer,
+  some str ← return $ m a,
+  trace str (return ())
+
 def rbmap.modify {α β lt} [decidable_rel lt] (s : rbmap α β lt)
   (a : α) (z : β) (f : β → β) : rbmap α β lt :=
 s.insert a $ match s.find a with
