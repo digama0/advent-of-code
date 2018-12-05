@@ -9,6 +9,7 @@ ch '+' >> (int.of_nat <$> number) <|>
 ch '-' >> ((λ x:ℕ, -x) <$> number)
 
 def letter : parser char := sat char.is_lower
+def Letter : parser char := sat char.is_upper
 
 def go {α} (file : string) (p : parser α) (m : α → option string) : io unit :=
 do s ← io.fs.read_file file,
