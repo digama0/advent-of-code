@@ -1,3 +1,5 @@
+-- https://adventofcode.com/2018/day/1
+
 import .common data.list.basic
 open parser sum
 

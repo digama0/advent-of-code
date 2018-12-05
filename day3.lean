@@ -24,13 +24,6 @@ namespace day3
 
 def box := array 1000 (array 1000 nat)
 
-def modify_many {n α} (f : α → α) : ℕ → ℕ → array n α → array n α
-| s 0     a := a
-| s (i+1) a := if h : s < n then
-    let a' := a.write ⟨s, h⟩ (f (a.read ⟨s, h⟩)) in
-    modify_many (s+1) i a'
-  else a
-
 def insert1 (b : box) (e : entry) : box :=
 modify_many (modify_many nat.succ e.left e.width) e.top e.height b
 
