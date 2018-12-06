@@ -35,3 +35,9 @@ def modify_many {n α} (f : α → α) : ℕ → ℕ → array n α → array n 
     let a' := a.write ⟨s, h⟩ (f (a.read ⟨s, h⟩)) in
     modify_many (s+1) i a'
   else a
+
+def array.modify {α n} (i : fin n) (f : α → α) (a : array n α) : array n α :=
+a.write i (f (a.read i))
+
+def array.modify' {α n} (i : ℕ) (f : α → α) (a : array n α) : array n α :=
+if h : _ then a.modify ⟨i, h⟩ f else a
