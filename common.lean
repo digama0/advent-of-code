@@ -29,6 +29,9 @@ s.insert a $ match s.find a with
 | none := z
 end
 
+def rbtree.size {α lt} [decidable_rel lt] (s : rbtree α lt) : ℕ :=
+s.fold (λ _, nat.succ) 0
+
 def modify_many {n α} (f : α → α) : ℕ → ℕ → array n α → array n α
 | s 0     a := a
 | s (i+1) a := if h : s < n then

@@ -1,6 +1,6 @@
 -- https://adventofcode.com/2018/day/6
 
-import .common data.list.basic data.nat.dist data.option
+import .common data.nat.dist data.option
 open parser
 
 namespace day6

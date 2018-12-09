@@ -10,24 +10,24 @@ namespace day1
 #eval day1 $ λ l, to_string l.sum -- 427
 
 /- non meta with a depth limiter -/
-def iter (inp : list ℤ) : ℕ → list ℤ → rbmap ℤ unit → ℤ → option string
+def iter (inp : list ℤ) : ℕ → list ℤ → rbtree ℤ → ℤ → option string
 | 0 _ _ _ := none
 | (n+1) [] s z := iter n inp s z
 | (n+1) (i::l) s z :=
   let j := i + z in
   if s.contains j then
     some (to_string j)
-  else iter (n+1) l (s.insert j ()) j
+  else iter (n+1) l (s.insert j) j
 
 -- #eval day1 $ λ l, iter l 139 [] (mk_rbmap _ _) 0 -- 341
 
 /- no depth limiter -/
-meta def iter2 (inp : list ℤ) : list ℤ → rbmap ℤ unit → ℤ → string
+meta def iter2 (inp : list ℤ) : list ℤ → rbtree ℤ → ℤ → string
 | [] s z := iter2 inp s z
 | (i::l) s z :=
   let j := i + z in
   if s.contains j then to_string j
-  else iter2 l (s.insert j ()) j
+  else iter2 l (s.insert j) j
 
 -- #eval day1 $ λ l, iter2 l [] (mk_rbmap _ _) 0 -- 341
 
@@ -37,11 +37,11 @@ meta def iter2 (inp : list ℤ) : list ℤ → rbmap ℤ unit → ℤ → string
   and reports failure rather than nontermination -/
 
 def insert_divmod (pd : ℤ)
-  (s : rbmap ℤ (rbmap ℤ unit)) (n : ℤ) : ℤ ⊕ rbmap ℤ (rbmap ℤ unit) :=
-let ret (c : rbmap ℤ unit) : ℤ ⊕ rbmap ℤ (rbmap ℤ unit) :=
-  sum.inr (s.insert (n % pd) (c.insert (n / pd) ())) in
+  (s : rbmap ℤ (rbtree ℤ)) (n : ℤ) : ℤ ⊕ rbmap ℤ (rbtree ℤ) :=
+let ret (c : rbtree ℤ) : ℤ ⊕ rbmap ℤ (rbtree ℤ) :=
+  sum.inr (s.insert (n % pd) (c.insert (n / pd))) in
 match s.find (n % pd) with
-| none := ret (mk_rbmap ℤ _)
+| none := ret (mk_rbtree ℤ)
 | (some c) := if c.contains (n / pd) then sum.inl n else ret c
 end
 
@@ -53,8 +53,8 @@ def convolve1 (cur : ℤ) : option (ℤ × rbmap ℤ (with_top ℤ)) → option 
 | none := some (cur, mk_rbmap ℤ _)
 | (some (prev, s)) := some (cur, s.insert prev (some (cur - prev)))
 
-def convolve (s : rbmap ℤ unit) : rbmap ℤ (with_top ℤ) :=
-match s.fold (λ cur _, convolve1 cur) none with
+def convolve (s : rbtree ℤ) : rbmap ℤ (with_top ℤ) :=
+match s.fold convolve1 none with
 | none := mk_rbmap _ _
 | (some (n, s)) := s.insert n ⊤
 end
