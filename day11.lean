@@ -1,4 +1,4 @@
--- https://adventofcode.com/2018/day/10
+-- https://adventofcode.com/2018/day/11
 
 import .common data.list.basic algebra.pi_instances
 open parser
